@@ -1,0 +1,8 @@
+{
+  "name": "bemify",
+  "version": "1.0.0",
+  "description": "Module for creating classNames based on BEM methodology",
+  "main": "index.js",
+  "author": "Aaron Hunt",
+  "license": "MIT"
+}
