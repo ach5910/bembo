@@ -23,12 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ach5010/bembo"
+    "url": "https://github.com/ach5910/bembo"
   },
   "bugs": {
-    "url": "https://github.com/ach5010/bembo/issues"
+    "url": "https://github.com/ach5910/bembo/issues"
   },
-  "homepage": "https://github.com/ach5010/bembo#readme",
+  "homepage": "https://github.com/ach5910/bembo#readme",
   "jest": {
     "roots": [
       "<rootDir>/src"
