@@ -1,8 +1,59 @@
 {
-  "name": "bemify",
-  "version": "1.0.0",
+  "name": "bembo",
+  "version": "0.0.1",
   "description": "Module for creating classNames based on BEM methodology",
-  "main": "index.js",
+  "main": "dist/index.js",
   "author": "Aaron Hunt",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": [
+    "bem",
+    "scss",
+    "less",
+    "css",
+    "react",
+    "classnames",
+    "block",
+    "element",
+    "modifier"
+  ],
+  "scripts": {
+    "test": "node test.js",
+    "prebuild": "./node_modules/.bin/rimraf dist",
+    "build": "./node_modules/.bin/babel src --out-dir dist --ignore 'src/**/*.test.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ach5010/bembo"
+  },
+  "bugs": {
+    "url": "https://github.com/ach5010/bembo/issues"
+  },
+  "homepage": "https://github.com/ach5010/bembo#readme",
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "babel-jest": "^26.3.0",
+    "jest": "^26.4.2",
+    "rimraf": "^3.0.2"
+  }
 }

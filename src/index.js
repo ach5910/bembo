@@ -19,7 +19,7 @@ function debug(){
 }
 
 function mergeCtx(ctx){
-    ctx.name = `${this.name ? `${this.name}__` : this.name}${ctx.name}`;
+    ctx.name = `${this.name && ctx.name ? `${this.name}__` : this.name}${ctx.name}`;
     ctx.mods = {
         ...this.mods,
         ...ctx.mods
@@ -28,18 +28,33 @@ function mergeCtx(ctx){
 }
 
 function toString(){
-    const names = [this.name];
+    const classNames = [this.name];
     Object.entries(this.mods)
         .filter(([, value]) => !!value)
         .forEach(([mod]) => {
-            names.push(`${this.name}--${mod}`)
+            classNames.push(`${this.name}--${mod}`)
         })
     
-    return names.join(" ");
+    return classNames.join(" ");
+}
+
+function createMods(...params){
+    const ctx = {...defaultCtx};
+    ctx.mods = params
+        .reduce((acc, curr) => {
+            if (isMod(curr)){
+                return {...acc, ...curr}
+            }
+            acc[curr] = curr;
+            return acc;
+        }, {})
+    ctx.mergeCtx = mergeCtx.bind(ctx);
+    ctx.toString = toString.bind(ctx);
+    return ctx;
 }
 
 function createCtx(...params){
-    let ctx = {...defaultCtx};
+    const ctx = {...defaultCtx};
     ctx.name = params
         .filter(isString)
         .reduce((acc, curr) => `${acc ? `${acc}-` : acc}${curr.trim()}`, "");
@@ -58,7 +73,23 @@ function createBem(ctx){
     const _bem = bem.bind(ctx);
     _bem.toString = toString.bind(ctx);
     _bem.debug = debug.bind(ctx);
-    return _bem;
+    return {
+        el: bem.bind(ctx),
+        e: bem.bind(ctx),
+        mod: mod.bind(ctx),
+        m: mod.bind(ctx),
+        toString: toString.bind(ctx),
+        debug: debug.bind(ctx)
+    };
+}
+
+function mod(...params){
+    if (params.length == 0){
+        return this.toString()
+    }
+
+    const ctx = this.mergeCtx(createMods(...params))
+    return createBem(ctx);
 }
 
 
@@ -71,22 +102,9 @@ function bem(...params){
     return createBem(ctx);
 
 }
-function factory(name){
+function factory(...params){
     const _default = createCtx();
-    return bem.call(_default, name.trim())
+    return bem.call(_default, ...params)
 }
 
-const block = factory;
-
-const b = block("list");
-
-console.log(b.toString(), b(), `${b}`)
-
-console.log(b("item", {error: true, severe: "10", success: ""}).toString())
-
-console.log(`${b("item", {error: true, severe: "10", success: ""})("title", "header", {success: "true"})}`)
-
-console.log(`${b("item", {error: true, severe: "10", success: ""})("title", "header", {error: false, severe: false,success: "true"})}`)
-
-console.log("" + b("title", "header", {error: true, severe: "10", success: ""}), b("title", "header", {error: true, severe: "10", success: ""}).debug())
-
+export default factory;
