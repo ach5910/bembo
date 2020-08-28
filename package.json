@@ -1,6 +1,6 @@
 {
   "name": "bembo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Module for creating classNames based on BEM methodology",
   "main": "dist/index.js",
   "author": "Aaron Hunt",
